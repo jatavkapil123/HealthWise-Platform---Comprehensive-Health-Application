@@ -20,6 +20,9 @@ from app.models.health_content import (
     HealthContent, WebStory, HealthTest, CorporateBenefit, Medicard,
     ContentType, ContentCategory, ContentStatus
 )
+from app.models.test_packages import TestPackage, TestPackageBooking, HealthRiskAssessment
+from app.models.prescriptions import Prescription, PrescriptionUpload
+from app.models.health_plans import HealthPlan, HealthPlanSubscription, EMIOption
 from app.core.security import get_password_hash
 from datetime import datetime, date, time
 
@@ -277,6 +280,163 @@ def main():
                 )
                 db.add(sample_medicard)
                 logger.info("Sample medicard created")
+        
+        # Create sample test packages
+        existing_packages = db.query(TestPackage).first()
+        if not existing_packages:
+            packages = [
+                TestPackage(
+                    name="Full Body Checkup - Basic",
+                    slug="full-body-basic",
+                    description="Comprehensive health screening with 59+ biomarkers",
+                    category="Full Body Checkup",
+                    price=499,
+                    original_price=2500,
+                    discount_percentage=80,
+                    test_count=59,
+                    tests_included=["CBC", "Lipid Profile", "Liver Function", "Kidney Function", "Thyroid", "Diabetes", "Vitamin D", "Vitamin B12"],
+                    home_collection=True,
+                    fasting_required=True,
+                    report_time="24 hours",
+                    is_popular=True,
+                    rating=4.8,
+                    total_bookings=15420
+                ),
+                TestPackage(
+                    name="Diabetes Care Package",
+                    slug="diabetes-care",
+                    description="Complete diabetes monitoring and management",
+                    category="Diabetes Care",
+                    price=299,
+                    original_price=800,
+                    discount_percentage=63,
+                    test_count=8,
+                    tests_included=["HbA1c", "Fasting Glucose", "Post Meal Glucose", "Insulin", "Microalbumin"],
+                    home_collection=True,
+                    fasting_required=True,
+                    report_time="6 hours",
+                    is_popular=True,
+                    rating=4.7,
+                    total_bookings=8930
+                ),
+                TestPackage(
+                    name="Heart Health Complete",
+                    slug="heart-health",
+                    description="Comprehensive cardiac risk assessment",
+                    category="Heart Health",
+                    price=799,
+                    original_price=2200,
+                    discount_percentage=64,
+                    test_count=15,
+                    tests_included=["Lipid Profile", "ECG", "Echo", "Troponin", "CRP", "Homocysteine"],
+                    home_collection=True,
+                    fasting_required=True,
+                    report_time="24 hours",
+                    is_popular=False,
+                    rating=4.9,
+                    total_bookings=5670
+                )
+            ]
+            for package in packages:
+                db.add(package)
+            logger.info("Sample test packages created")
+        
+        # Create sample health plans
+        existing_plans = db.query(HealthPlan).first()
+        if not existing_plans:
+            plans = [
+                HealthPlan(
+                    name="Health Prime",
+                    slug="health-prime",
+                    description="Unlimited tele/video consultations with comprehensive benefits",
+                    price=699,
+                    original_price=999,
+                    duration_months=12,
+                    benefits=[
+                        "Unlimited video/audio consultations",
+                        "15% discount on lab tests",
+                        "10% discount on medicines",
+                        "Annual health checkup worth ₹3000",
+                        "Network discounts at 1500+ hospitals"
+                    ],
+                    consultation_limit=-1,
+                    consultation_types=["video", "audio", "chat"],
+                    lab_test_discount=15.0,
+                    medicine_discount=10.0,
+                    annual_checkup_included=True,
+                    checkup_value=3000.0,
+                    network_hospitals=1500,
+                    network_labs=4000,
+                    network_pharmacies=5000,
+                    features=["24/7 support", "Digital prescriptions", "Health records"],
+                    is_popular=True,
+                    display_order=1
+                ),
+                HealthPlan(
+                    name="Health Prime Max",
+                    slug="health-prime-max",
+                    description="Premium health plan with maximum benefits",
+                    price=1499,
+                    original_price=2499,
+                    duration_months=12,
+                    benefits=[
+                        "Unlimited specialist consultations",
+                        "25% discount on lab tests",
+                        "20% discount on medicines",
+                        "2 annual health checkups worth ₹6000",
+                        "Priority appointments",
+                        "Home sample collection"
+                    ],
+                    consultation_limit=-1,
+                    consultation_types=["video", "audio", "chat"],
+                    lab_test_discount=25.0,
+                    medicine_discount=20.0,
+                    annual_checkup_included=True,
+                    checkup_value=6000.0,
+                    network_hospitals=2000,
+                    network_labs=5000,
+                    network_pharmacies=6000,
+                    features=["24/7 priority support", "Digital prescriptions", "Health records", "Dedicated health manager"],
+                    is_popular=True,
+                    display_order=2
+                )
+            ]
+            for plan in plans:
+                db.add(plan)
+            logger.info("Sample health plans created")
+        
+        # Create sample EMI options
+        existing_emi = db.query(EMIOption).first()
+        if not existing_emi:
+            emi_options = [
+                EMIOption(
+                    name="Bajaj Finserv EMI",
+                    description="Easy EMI with zero down payment",
+                    min_amount=5000,
+                    max_amount=500000,
+                    tenure_months=[3, 6, 9, 12, 18, 24],
+                    interest_rate=0,
+                    processing_fee=199,
+                    provider_name="Bajaj Finserv",
+                    is_active=True,
+                    display_order=1
+                ),
+                EMIOption(
+                    name="Standard EMI",
+                    description="Flexible EMI options with low interest",
+                    min_amount=3000,
+                    max_amount=200000,
+                    tenure_months=[3, 6, 9, 12],
+                    interest_rate=12.0,
+                    processing_fee=99,
+                    provider_name="HealthWise Finance",
+                    is_active=True,
+                    display_order=2
+                )
+            ]
+            for emi in emi_options:
+                db.add(emi)
+            logger.info("Sample EMI options created")
         
         db.commit()
         db.close()

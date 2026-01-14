@@ -33,20 +33,90 @@ export default function WebStoriesPage() {
       title: '5 Morning Habits for Better Health',
       description: 'Start your day right with these simple health habits',
       cover_image: '/api/placeholder/400/600',
-      total_slides: 6,
+      total_slides: 5,
       views_count: 1500,
       category: 'general_health',
       published_at: '2024-01-15'
     },
     {
       id: 2,
-      title: 'Superfoods for Immunity',
-      description: 'Boost your immune system with these powerful foods',
+      title: 'Heart Health Tips',
+      description: 'Essential tips to keep your heart healthy',
       cover_image: '/api/placeholder/400/600',
-      total_slides: 8,
-      views_count: 2200,
-      category: 'nutrition',
+      total_slides: 5,
+      views_count: 2100,
+      category: 'general_health',
+      published_at: '2024-01-14'
+    },
+    {
+      id: 3,
+      title: 'Diabetes Management Guide',
+      description: 'Control your blood sugar with these proven strategies',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 1850,
+      category: 'general_health',
+      published_at: '2024-01-13'
+    },
+    {
+      id: 4,
+      title: 'Mental Wellness Tips',
+      description: 'Take care of your mental health every day',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 2450,
+      category: 'mental_wellness',
       published_at: '2024-01-12'
+    },
+    {
+      id: 5,
+      title: 'Nutrition Essentials',
+      description: 'Build a healthy plate with these nutrition basics',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 1920,
+      category: 'nutrition',
+      published_at: '2024-01-11'
+    },
+    {
+      id: 6,
+      title: 'Fitness Fundamentals',
+      description: 'Get fit with these essential exercise tips',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 2780,
+      category: 'fitness',
+      published_at: '2024-01-10'
+    },
+    {
+      id: 7,
+      title: 'Sleep Better Tonight',
+      description: 'Improve your sleep quality with these proven tips',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 3120,
+      category: 'general_health',
+      published_at: '2024-01-09'
+    },
+    {
+      id: 8,
+      title: 'Immunity Boosters',
+      description: 'Strengthen your immune system naturally',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 2650,
+      category: 'nutrition',
+      published_at: '2024-01-08'
+    },
+    {
+      id: 9,
+      title: 'Women\'s Health Essentials',
+      description: 'Important health tips every woman should know',
+      cover_image: '/api/placeholder/400/600',
+      total_slides: 5,
+      views_count: 3450,
+      category: 'womens_health',
+      published_at: '2024-01-07'
     }
   ]
 

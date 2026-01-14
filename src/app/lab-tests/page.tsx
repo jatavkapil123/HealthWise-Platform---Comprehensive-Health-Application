@@ -293,9 +293,12 @@ export default function LabTestsPage() {
                         Book Now
                         <ArrowRight className="h-4 w-4" />
                       </Link>
-                      <button className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                      <Link
+                        href={`/lab-tests/${pkg.id}`}
+                        className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors text-center block"
+                      >
                         View Details
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

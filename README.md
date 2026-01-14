@@ -4,13 +4,25 @@ A modern, comprehensive health platform built with Next.js and Python FastAPI, f
 
 ## ✨ Features
 
-- **🔐 User Authentication** - Complete login/register system with JWT tokens
-- **👤 User Account Management** - Profile management and order tracking
+### Core Features
+- **🔐 User Authentication** - Complete login/register system with JWT tokens and password reset
+- **👤 User Account Management** - Profile management and comprehensive order tracking
 - **🧪 Lab Test Booking** - Book pathology and radiology tests with home collection
-- **👨‍⚕️ Doctor Consultations** - Connect with certified doctors through secure consultations  
+- **👨‍⚕️ Doctor Consultations** - Connect with certified doctors through video/audio/chat
 - **💊 Medicine Ordering** - Order prescription and OTC medicines with delivery tracking
-- **📊 Health Reports** - Digital health reports and medical history
+- **📊 Health Reports** - Digital health reports and medical history management
 - **🏥 Emergency Care** - 24/7 emergency support and immediate assistance
+
+### New Features (Inspired by Bajaj Finserv Health)
+- **📦 Test Package System** - Comprehensive health packages (Full Body Checkup at ₹499 with 59+ biomarkers)
+- **📋 Digital Prescriptions** - Doctors can generate digital prescriptions with medications and follow-up
+- **📤 Prescription Upload** - Patients can upload prescription images/PDFs for medicine orders
+- **🎯 Health Risk Assessment** - Interactive 5-step lifestyle quiz with personalized recommendations
+- **💳 Health Plans & Subscriptions** - Multiple subscription tiers with unlimited consultations and discounts
+- **💰 EMI Payment Options** - Flexible EMI plans with zero down payment through Bajaj Finserv
+- **🏠 Home Sample Collection** - Free home collection for lab tests with scheduling
+- **🎖️ NABL Certified Labs** - Partner with certified laboratories for quality assurance
+- **📱 Digital Reports** - Instant digital report delivery within 24 hours
 
 ## �️ Architecture
 
@@ -202,30 +214,47 @@ The platform comes with pre-configured demo accounts:
 ```
 ├── frontend/
 │   ├── src/
-│   │   ├── app/                 # Next.js App Router pages
-│   │   │   ├── login/          # Login page
-│   │   │   ├── register/       # Registration page
-│   │   │   ├── my-account/     # User account dashboard
-│   │   │   ├── my-orders/      # Order tracking page
-│   │   │   ├── lab-tests/      # Lab test booking
-│   │   │   ├── consult-doctor/ # Doctor consultation
-│   │   │   ├── medicines/      # Medicine ordering
-│   │   │   └── health-reports/ # Health reports
-│   │   ├── components/         # Reusable UI components
-│   │   ├── contexts/          # React contexts (Auth, etc.)
-│   │   ├── services/          # API service layer
-│   │   ├── types/             # TypeScript definitions
-│   │   └── utils/             # Helper utilities
+│   │   ├── app/                      # Next.js App Router pages
+│   │   │   ├── login/               # Login page
+│   │   │   ├── register/            # Registration page
+│   │   │   ├── forgot-password/     # Password reset request
+│   │   │   ├── reset-password/      # Password reset form
+│   │   │   ├── my-account/          # User account dashboard
+│   │   │   ├── my-orders/           # Order tracking page
+│   │   │   ├── lab-tests/           # Lab test booking
+│   │   │   ├── consult-doctor/      # Doctor consultation
+│   │   │   ├── medicines/           # Medicine ordering
+│   │   │   ├── health-reports/      # Health reports
+│   │   │   ├── health-risk-assessment/  # NEW: Health risk quiz
+│   │   │   └── health-plans/        # NEW: Subscription plans
+│   │   ├── components/              # Reusable UI components
+│   │   ├── contexts/                # React contexts (Auth, etc.)
+│   │   ├── services/                # API service layer
+│   │   ├── types/                   # TypeScript definitions
+│   │   └── utils/                   # Helper utilities
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/endpoints/  # API route handlers
-│   │   ├── core/              # Core functionality (auth, config)
-│   │   ├── models/            # Database models
-│   │   ├── schemas/           # Pydantic schemas
-│   │   └── middleware/        # Custom middleware
-│   ├── scripts/               # Database initialization scripts
-│   └── requirements.txt       # Python dependencies
-└── start_healthwise.sh        # Quick start script
+│   │   ├── api/v1/endpoints/        # API route handlers
+│   │   │   ├── auth.py             # Authentication
+│   │   │   ├── users.py            # User management
+│   │   │   ├── test_packages.py    # NEW: Test packages
+│   │   │   ├── prescriptions.py    # NEW: Digital prescriptions
+│   │   │   ├── health_plans.py     # NEW: Health plans
+│   │   │   ├── lab_tests.py        # Lab tests
+│   │   │   ├── consultations.py    # Consultations
+│   │   │   └── medicines.py        # Medicines
+│   │   ├── core/                   # Core functionality (auth, config)
+│   │   ├── models/                 # Database models
+│   │   │   ├── user.py
+│   │   │   ├── test_packages.py    # NEW
+│   │   │   ├── prescriptions.py    # NEW
+│   │   │   ├── health_plans.py     # NEW
+│   │   │   └── ...
+│   │   ├── schemas/                # Pydantic schemas
+│   │   └── middleware/             # Custom middleware
+│   ├── scripts/                    # Database initialization scripts
+│   └── requirements.txt            # Python dependencies
+└── start_healthwise.sh             # Quick start script
 ```
 
 ## 🔧 API Endpoints
@@ -243,6 +272,32 @@ The platform comes with pre-configured demo accounts:
 - `GET /api/v1/users/profile` - Get user profile
 - `PUT /api/v1/users/profile` - Update user profile
 - `POST /api/v1/users/change-password` - Change password
+
+### Test Packages (NEW)
+- `GET /api/v1/test-packages/packages` - List all test packages
+- `GET /api/v1/test-packages/packages/{id}` - Get package details
+- `POST /api/v1/test-packages/bookings` - Book a test package
+- `GET /api/v1/test-packages/bookings` - Get user's bookings
+- `POST /api/v1/test-packages/risk-assessment` - Create health risk assessment
+- `GET /api/v1/test-packages/risk-assessment/latest` - Get latest assessment
+
+### Prescriptions (NEW)
+- `POST /api/v1/prescriptions/` - Create prescription (doctors only)
+- `GET /api/v1/prescriptions/` - List prescriptions
+- `GET /api/v1/prescriptions/{id}` - Get prescription details
+- `POST /api/v1/prescriptions/upload` - Upload prescription image/PDF
+- `GET /api/v1/prescriptions/uploads/my` - Get user's uploads
+- `PUT /api/v1/prescriptions/uploads/{id}/verify` - Verify prescription
+
+### Health Plans (NEW)
+- `GET /api/v1/health-plans/plans` - List all health plans
+- `GET /api/v1/health-plans/plans/{id}` - Get plan details
+- `POST /api/v1/health-plans/subscriptions` - Subscribe to a plan
+- `GET /api/v1/health-plans/subscriptions/my` - Get user subscriptions
+- `GET /api/v1/health-plans/subscriptions/active` - Get active subscription
+- `PUT /api/v1/health-plans/subscriptions/{id}/cancel` - Cancel subscription
+- `GET /api/v1/health-plans/emi-options` - Get EMI options
+- `POST /api/v1/health-plans/emi-calculate` - Calculate EMI
 
 ### Health Services
 - `GET /api/v1/lab-tests` - Get available lab tests
@@ -340,6 +395,50 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Backend API**: http://localhost:8001
 - **API Documentation**: http://localhost:8001/docs
 - **Emergency**: 911 or +1-800-HEALTH
+
+## 🆕 New Features Details
+
+### Test Package System
+Book comprehensive health checkup packages with home sample collection:
+- **Full Body Checkup** - ₹499 (59+ biomarkers, 80% off)
+- **Diabetes Care Package** - ₹299 (8 tests, 63% off)
+- **Heart Health Complete** - ₹799 (15 tests, 64% off)
+- Free home collection with flexible scheduling
+- Digital reports within 24 hours
+- NABL certified partner labs
+
+### Health Risk Assessment
+Interactive 5-step quiz evaluating:
+- Basic health metrics (BMI, age, gender)
+- Lifestyle habits (smoking, alcohol, exercise, diet, sleep)
+- Medical history (chronic conditions, family history)
+- Mental wellbeing (stress, mental health)
+- Personalized risk score and recommendations
+
+### Digital Prescription System
+- Doctors can generate digital prescriptions with medications, dosage, and instructions
+- Patients can upload prescription images/PDFs (up to 5MB)
+- Prescription verification workflow
+- Follow-up scheduling and reminders
+- Dietary and lifestyle advice included
+
+### Health Plans & Subscriptions
+Three subscription tiers available:
+1. **Health Prime** (₹699/year) - Unlimited consultations, 15% lab discount, 10% medicine discount
+2. **Health Prime Max** (₹1499/year) - Specialist consultations, 25% lab discount, 20% medicine discount, family coverage
+3. **Health Prime Tele** (₹499/year) - Unlimited teleconsultations, basic discounts
+
+### EMI Payment Options
+- Zero down payment available
+- Flexible tenures: 3, 6, 9, 12, 18, 24 months
+- Bajaj Finserv integration ready
+- Low interest rates with transparent pricing
+
+## 📚 Documentation
+
+For detailed implementation information, see:
+- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Complete feature documentation
+- **[API Documentation](http://localhost:8001/docs)** - Interactive API docs (when backend is running)
 
 ---
 
