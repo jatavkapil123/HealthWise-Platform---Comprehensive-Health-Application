@@ -1,1 +1,43 @@
-node_modules
+# Dependencies
+node_modules/
+backend/venv/
+.venv/
+
+# Build artifacts
+.next/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+backend/.env
+
+# Logs
+logs/
+*.log
+backend/logs/
+
+# Uploads
+uploads/
+backend/uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Testing
+coverage/
+.pytest_cache/

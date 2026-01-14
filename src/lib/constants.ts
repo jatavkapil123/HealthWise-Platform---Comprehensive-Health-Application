@@ -18,9 +18,33 @@ export const API_ENDPOINTS = {
   MEDICATIONS: '/api/health/medications',
   PRESCRIPTIONS: '/api/health/prescriptions',
   
+  // Lab Tests
+  LAB_TESTS: '/api/lab-tests',
+  LAB_PACKAGES: '/api/lab-tests/packages',
+  LAB_BOOKING: '/api/lab-tests/booking',
+  LAB_RESULTS: '/api/lab-tests/results',
+  LAB_REPORTS: '/api/lab-tests/reports',
+  
+  // Doctor Consultation
+  DOCTORS: '/api/doctors',
+  DOCTOR_SEARCH: '/api/doctors/search',
+  CONSULTATION_BOOKING: '/api/consultations/booking',
+  CONSULTATIONS: '/api/consultations',
+  VIDEO_CONSULTATION: '/api/consultations/video',
+  
+  // Medicine Ordering
+  MEDICINES: '/api/medicines',
+  MEDICINE_SEARCH: '/api/medicines/search',
+  MEDICINE_ORDERS: '/api/medicines/orders',
+  MEDICINE_CART: '/api/medicines/cart',
+  ORDER_TRACKING: '/api/medicines/tracking',
+  
+  // Health Reports
+  HEALTH_REPORTS: '/api/health/reports',
+  REPORT_DOWNLOAD: '/api/health/reports/download',
+  
   // Appointments
   APPOINTMENTS: '/api/appointments',
-  DOCTORS: '/api/doctors',
   AVAILABILITY: '/api/doctors/availability',
   
   // Community
@@ -284,9 +308,108 @@ export const CACHE_KEYS = {
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
-  AUTH_TOKEN: 'auth_token',
-  REFRESH_TOKEN: 'refresh_token',
+  AUTH_TOKEN: 'healthwise_auth_token',
+  REFRESH_TOKEN: 'healthwise_refresh_token',
+  USER_DATA: 'healthwise_user_data',
   USER_PREFERENCES: 'user_preferences',
   THEME: 'theme',
   LANGUAGE: 'language'
+} as const
+
+// Lab Test Categories
+export const LAB_TEST_CATEGORIES = {
+  FULL_BODY: 'Full Body Checkup',
+  DIABETES: 'Diabetes Care',
+  HEART: 'Heart Health',
+  THYROID: 'Thyroid Function',
+  LIVER: 'Liver Function',
+  KIDNEY: 'Kidney Function',
+  VITAMIN: 'Vitamin Deficiency',
+  IMMUNITY: 'Immunity',
+  WOMEN_HEALTH: 'Women Health',
+  MEN_HEALTH: 'Men Health',
+  SENIOR_CITIZEN: 'Senior Citizen',
+  RADIOLOGY: 'Radiology & Imaging'
+} as const
+
+// Doctor Specializations
+export const DOCTOR_SPECIALIZATIONS = {
+  GENERAL_PHYSICIAN: 'General Physician',
+  CARDIOLOGIST: 'Cardiologist',
+  DERMATOLOGIST: 'Dermatologist',
+  GYNECOLOGIST: 'Gynecologist',
+  PEDIATRICIAN: 'Pediatrician',
+  ORTHOPEDIC: 'Orthopedic',
+  NEUROLOGIST: 'Neurologist',
+  PSYCHIATRIST: 'Psychiatrist',
+  ENDOCRINOLOGIST: 'Endocrinologist',
+  GASTROENTEROLOGIST: 'Gastroenterologist',
+  PULMONOLOGIST: 'Pulmonologist',
+  UROLOGIST: 'Urologist',
+  OPHTHALMOLOGIST: 'Ophthalmologist',
+  ENT: 'ENT Specialist',
+  DENTIST: 'Dentist'
+} as const
+
+// Medicine Categories
+export const MEDICINE_CATEGORIES = {
+  PRESCRIPTION: 'Prescription Medicines',
+  OTC: 'Over the Counter',
+  AYURVEDIC: 'Ayurvedic',
+  HOMEOPATHIC: 'Homeopathic',
+  VITAMINS: 'Vitamins & Supplements',
+  BABY_CARE: 'Baby Care',
+  PERSONAL_CARE: 'Personal Care',
+  HEALTH_DEVICES: 'Health Devices',
+  FIRST_AID: 'First Aid'
+} as const
+
+// Popular Lab Packages
+export const POPULAR_LAB_PACKAGES = [
+  {
+    id: 'full-body-basic',
+    name: 'Full Body Checkup - Basic',
+    price: 499,
+    originalPrice: 2500,
+    tests: 59,
+    category: 'Full Body Checkup',
+    popular: true
+  },
+  {
+    id: 'diabetes-care',
+    name: 'Diabetes Care Package',
+    price: 299,
+    originalPrice: 800,
+    tests: 8,
+    category: 'Diabetes Care',
+    popular: true
+  },
+  {
+    id: 'thyroid-profile',
+    name: 'Thyroid Profile Complete',
+    price: 199,
+    originalPrice: 600,
+    tests: 3,
+    category: 'Thyroid Function',
+    popular: false
+  },
+  {
+    id: 'lipid-profile',
+    name: 'Lipid Profile',
+    price: 149,
+    originalPrice: 400,
+    tests: 8,
+    category: 'Heart Health',
+    popular: true
+  }
+] as const
+
+// Health Report Types
+export const HEALTH_REPORT_TYPES = {
+  LAB_RESULT: 'Lab Test Result',
+  CONSULTATION: 'Doctor Consultation',
+  PRESCRIPTION: 'Prescription',
+  HEALTH_CHECKUP: 'Health Checkup Summary',
+  VACCINATION: 'Vaccination Record',
+  MEDICAL_HISTORY: 'Medical History'
 } as const

@@ -8,7 +8,7 @@ class ApiService {
 
   constructor() {
     this.api = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1',
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
@@ -145,25 +145,291 @@ class ApiService {
 
   // Authentication methods
   async login(email: string, password: string) {
-    const response = await this.post(API_ENDPOINTS.LOGIN, { email, password })
-    
-    if (response.success && response.data) {
-      const { accessToken, refreshToken, user } = response.data
-      setToStorage(STORAGE_KEYS.AUTH_TOKEN, accessToken)
-      setToStorage(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
-      return { success: true, user }
+    try {
+      const response = await this.api.post('/auth/login', { email, password })
+      
+      if (response.data && response.data.token) {
+        const { token, user } = response.data
+        setToStorage(STORAGE_KEYS.AUTH_TOKEN, token.access_token)
+        setToStorage(STORAGE_KEYS.REFRESH_TOKEN, token.refresh_token)
+        return { success: true, user, token }
+      }
+      
+      return { success: false, error: 'Invalid response format' }
+    } catch (error: any) {
+      console.error('Login error:', error)
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Login failed'
+      }
     }
-    
-    return response
   }
 
   async register(userData: any) {
-    return this.post(API_ENDPOINTS.REGISTER, userData)
+    try {
+      const response = await this.api.post('/auth/register', userData)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      console.error('Register error:', error)
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Registration failed'
+      }
+    }
   }
 
-  logout() {
-    removeFromStorage(STORAGE_KEYS.AUTH_TOKEN)
-    removeFromStorage(STORAGE_KEYS.REFRESH_TOKEN)
+  async forgotPassword(email: string) {
+    try {
+      const response = await this.api.post('/auth/forgot-password', { email })
+      return { success: true, message: response.data.message }
+    } catch (error: any) {
+      console.error('Forgot password error:', error)
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to send reset email'
+      }
+    }
+  }
+
+  async resetPassword(token: string, newPassword: string, confirmPassword: string) {
+    try {
+      const response = await this.api.post('/auth/reset-password', {
+        token,
+        new_password: newPassword,
+        confirm_password: confirmPassword
+      })
+      return { success: true, message: response.data.message }
+    } catch (error: any) {
+      console.error('Reset password error:', error)
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to reset password'
+      }
+    }
+  }
+
+  async verifyResetToken(token: string) {
+    try {
+      const response = await this.api.post('/auth/verify-reset-token', null, {
+        params: { token }
+      })
+      return { success: true, message: response.data.message }
+    } catch (error: any) {
+      console.error('Verify token error:', error)
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Invalid token'
+      }
+    }
+  }
+
+  // Health Alerts methods
+  async getHealthAlerts(status?: string, alertType?: string, limit: number = 50) {
+    try {
+      const params: any = { limit }
+      if (status) params.status = status
+      if (alertType) params.alert_type = alertType
+      
+      const response = await this.get('/health-alerts/alerts', { params })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch health alerts'
+      }
+    }
+  }
+
+  async getAlertsSummary() {
+    try {
+      const response = await this.get('/health-alerts/alerts/summary')
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch alerts summary'
+      }
+    }
+  }
+
+  async acknowledgeAlert(alertId: number, actionTaken?: string) {
+    try {
+      const response = await this.post(`/health-alerts/alerts/${alertId}/acknowledge`, {
+        action_taken: actionTaken
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to acknowledge alert'
+      }
+    }
+  }
+
+  async resolveAlert(alertId: number, actionTaken?: string) {
+    try {
+      const response = await this.post(`/health-alerts/alerts/${alertId}/resolve`, {
+        action_taken: actionTaken
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to resolve alert'
+      }
+    }
+  }
+
+  async recordVitalSigns(vitalSigns: any) {
+    try {
+      const response = await this.post('/health-alerts/vital-signs', vitalSigns)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to record vital signs'
+      }
+    }
+  }
+
+  async getVitalSigns(days: number = 30, limit: number = 50) {
+    try {
+      const response = await this.get('/health-alerts/vital-signs', {
+        params: { days, limit }
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch vital signs'
+      }
+    }
+  }
+
+  async getMedicationReminders(activeOnly: boolean = true) {
+    try {
+      const response = await this.get('/health-alerts/medication-reminders', {
+        params: { active_only: activeOnly }
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch medication reminders'
+      }
+    }
+  }
+
+  async createMedicationReminder(reminderData: any) {
+    try {
+      const response = await this.post('/health-alerts/medication-reminders', reminderData)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to create medication reminder'
+      }
+    }
+  }
+
+  async recordDoseTaken(reminderId: number) {
+    try {
+      const response = await this.post(`/health-alerts/medication-reminders/${reminderId}/take-dose`)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to record dose'
+      }
+    }
+  }
+
+  async getEmergencyContacts() {
+    try {
+      const response = await this.get('/health-alerts/emergency-contacts')
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch emergency contacts'
+      }
+    }
+  }
+
+  async createEmergencyContact(contactData: any) {
+    try {
+      const response = await this.post('/health-alerts/emergency-contacts', contactData)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to create emergency contact'
+      }
+    }
+  }
+
+  async createEmergencyAlert(emergencyData: any) {
+    try {
+      const response = await this.post('/health-alerts/emergency-alert', emergencyData)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to create emergency alert'
+      }
+    }
+  }
+
+  async getHealthDashboard() {
+    try {
+      const response = await this.get('/health-alerts/dashboard')
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch health dashboard'
+      }
+    }
+  }
+
+  async getHealthGoals(activeOnly: boolean = true) {
+    try {
+      const response = await this.get('/health-alerts/health-goals', {
+        params: { active_only: activeOnly }
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to fetch health goals'
+      }
+    }
+  }
+
+  async createHealthGoal(goalData: any) {
+    try {
+      const response = await this.post('/health-alerts/health-goals', goalData)
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to create health goal'
+      }
+    }
+  }
+
+  async updateGoalProgress(goalId: number, currentValue: number) {
+    try {
+      const response = await this.put(`/health-alerts/health-goals/${goalId}/progress`, {
+        current_value: currentValue
+      })
+      return { success: true, data: response.data }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.response?.data?.detail || 'Failed to update goal progress'
+      }
+    }
   }
 
   // Health data methods
@@ -217,6 +483,80 @@ class ApiService {
     return this.get(`${API_ENDPOINTS.AVAILABILITY}/${doctorId}`, {
       params: { date: date.toISOString().split('T')[0] }
     })
+  }
+
+  // Health Content methods
+  async getHealthLibraryContent(category?: string, contentType?: string, featured?: boolean) {
+    const params: any = {}
+    if (category) params.category = category
+    if (contentType) params.content_type = contentType
+    if (featured !== undefined) params.featured = featured
+    
+    return this.get('/content/health-library', { params })
+  }
+
+  async getHealthContent(contentId: number) {
+    return this.get(`/content/health-library/${contentId}`)
+  }
+
+  async likeHealthContent(contentId: number) {
+    return this.post(`/content/health-library/${contentId}/like`)
+  }
+
+  async getWebStories(category?: string, featured?: boolean) {
+    const params: any = {}
+    if (category) params.category = category
+    if (featured !== undefined) params.featured = featured
+    
+    return this.get('/content/web-stories', { params })
+  }
+
+  async getWebStory(storyId: number) {
+    return this.get(`/content/web-stories/${storyId}`)
+  }
+
+  async getHealthTests(category?: string, difficulty?: string, featured?: boolean) {
+    const params: any = {}
+    if (category) params.category = category
+    if (difficulty) params.difficulty = difficulty
+    if (featured !== undefined) params.featured = featured
+    
+    return this.get('/content/health-tests', { params })
+  }
+
+  async getHealthTest(testId: number) {
+    return this.get(`/content/health-tests/${testId}`)
+  }
+
+  async submitHealthTestResult(testId: number, resultData: any) {
+    return this.post(`/content/health-tests/${testId}/submit`, resultData)
+  }
+
+  async getUserTestResults() {
+    return this.get('/content/health-tests/results')
+  }
+
+  async getCorporateBenefits(companyCode?: string) {
+    const params: any = {}
+    if (companyCode) params.company_code = companyCode
+    
+    return this.get('/content/corporate-benefits', { params })
+  }
+
+  async getCorporateBenefit(benefitId: number) {
+    return this.get(`/content/corporate-benefits/${benefitId}`)
+  }
+
+  async getUserMedicards() {
+    return this.get('/content/medicards')
+  }
+
+  async getMedicard(cardId: number) {
+    return this.get(`/content/medicards/${cardId}`)
+  }
+
+  async useMedicard(cardId: number) {
+    return this.post(`/content/medicards/${cardId}/use`)
   }
 
   // Community methods

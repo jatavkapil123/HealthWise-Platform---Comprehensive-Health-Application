@@ -2,42 +2,77 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Search, Menu, X, Heart, Phone, User, Bell, ChevronDown, MapPin, Clock, Shield } from 'lucide-react'
+import { Search, Menu, X, Heart, Phone, User, Bell, ChevronDown, MapPin, Clock, Shield, LogOut } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function Header() {
+  const { user, isAuthenticated, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [isServicesOpen, setIsServicesOpen] = useState(false)
 
   const navigation = [
     { 
-      name: 'Lab Tests', 
+      name: 'Book Appointment', 
+      href: '/book-appointment',
+      description: 'Schedule consultations with doctors'
+    },
+    { 
+      name: 'Book Lab Test', 
       href: '/lab-tests',
       description: 'Book pathology & radiology tests',
       hasDropdown: true,
       dropdownItems: [
-        { name: 'Full Body Checkup', href: '/full-body-checkup', price: '₹499' },
-        { name: 'Blood Tests', href: '/blood-tests', price: '₹199' },
-        { name: 'Diabetes Package', href: '/diabetes-package', price: '₹299' },
-        { name: 'Thyroid Profile', href: '/thyroid-profile', price: '₹199' },
-        { name: 'Heart Health', href: '/heart-health', price: '₹599' },
+        { name: 'Full Body Checkup', href: '/lab-tests/full-body-checkup', price: '₹499' },
+        { name: 'Diabetes Package', href: '/lab-tests/diabetes-package', price: '₹299' },
+        { name: 'Thyroid Profile', href: '/lab-tests/thyroid-profile', price: '₹199' },
+        { name: 'Heart Health', href: '/lab-tests/heart-health', price: '₹799' },
+        { name: 'Women Health', href: '/lab-tests/women-health', price: '₹899' },
       ]
     },
     { 
-      name: 'Consult Doctor', 
-      href: '/consult-doctor',
-      description: 'Online doctor consultations'
+      name: 'Health Library', 
+      href: '/health-library',
+      description: 'Medical information & resources',
+      hasDropdown: true,
+      dropdownItems: [
+        { name: 'General Health', href: '/health-library/general-health' },
+        { name: 'Covid-19', href: '/health-library/covid-19' },
+        { name: 'Aarogya Care', href: '/health-library/aarogya-care' },
+        { name: 'Ayurveda', href: '/health-library/ayurveda' },
+        { name: 'Cancer', href: '/health-library/cancer' },
+        { name: 'Cholesterol', href: '/health-library/cholesterol' },
+        { name: 'Hypertension', href: '/health-library/hypertension' },
+        { name: 'Heart Health', href: '/health-library/heart-health' },
+        { name: 'Diabetes', href: '/health-library/diabetes' },
+        { name: 'Yoga & Exercise', href: '/health-library/yoga-exercise' },
+        { name: 'Skin & Hair', href: '/health-library/skin-hair' },
+        { name: 'Women\'s Health', href: '/health-library/womens-health' },
+        { name: 'Immunity', href: '/health-library/immunity' },
+        { name: 'Nutrition', href: '/health-library/nutrition' },
+        { name: 'Mental Wellness', href: '/health-library/mental-wellness' },
+        { name: 'Thyroid', href: '/health-library/thyroid' }
+      ]
     },
     { 
-      name: 'Health Packages', 
-      href: '/health-packages',
-      description: 'Comprehensive health checkups'
+      name: 'Web Stories', 
+      href: '/web-stories',
+      description: 'Interactive health stories'
     },
     { 
-      name: 'Health Records', 
-      href: '/health-records',
-      description: 'Digital health reports & history'
+      name: 'Health Tests', 
+      href: '/health-tests',
+      description: 'Comprehensive health assessments'
     },
+    { 
+      name: 'Corporate Benefits', 
+      href: '/corporate-benefits',
+      description: 'Employee health programs'
+    },
+    { 
+      name: 'Medicards', 
+      href: '/medicards',
+      description: 'Health membership cards'
+    }
   ]
 
   return (
@@ -123,9 +158,11 @@ export function Header() {
                                   {dropdownItem.name}
                                 </div>
                               </div>
-                              <div className="text-primary-800 font-bold">
-                                {dropdownItem.price}
-                              </div>
+                              {'price' in dropdownItem && (
+                                <div className="text-primary-800 font-bold">
+                                  {dropdownItem.price}
+                                </div>
+                              )}
                             </Link>
                           ))}
                         </div>
@@ -185,19 +222,40 @@ export function Header() {
                   {/* User Dropdown */}
                   <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <div className="p-2">
-                      <Link href="/login" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
-                        Sign In
-                      </Link>
-                      <Link href="/register" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
-                        Register
-                      </Link>
-                      <hr className="my-2" />
-                      <Link href="/my-account" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
-                        My Account
-                      </Link>
-                      <Link href="/my-orders" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
-                        My Orders
-                      </Link>
+                      {isAuthenticated ? (
+                        <>
+                          <div className="px-4 py-2 border-b border-gray-100">
+                            <div className="font-medium text-gray-900">{user?.first_name} {user?.last_name}</div>
+                            <div className="text-sm text-gray-500">{user?.email}</div>
+                          </div>
+                          <Link href="/my-account" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
+                            My Account
+                          </Link>
+                          <Link href="/my-orders" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
+                            My Orders
+                          </Link>
+                          <Link href="/health-reports" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
+                            Health Reports
+                          </Link>
+                          <hr className="my-2" />
+                          <button 
+                            onClick={logout}
+                            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-800 rounded-lg transition-colors flex items-center gap-2"
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Sign Out
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link href="/login" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
+                            Sign In
+                          </Link>
+                          <Link href="/register" className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-800 rounded-lg transition-colors">
+                            Register
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -258,7 +316,9 @@ export function Header() {
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span>{dropdownItem.name}</span>
-                            <span className="text-primary-800 font-bold">{dropdownItem.price}</span>
+                            {'price' in dropdownItem && (
+                              <span className="text-primary-800 font-bold">{dropdownItem.price}</span>
+                            )}
                           </Link>
                         ))}
                       </div>
@@ -281,24 +341,61 @@ export function Header() {
 
               {/* Mobile User Actions */}
               <div className="mt-4 px-4 pt-4 border-t border-gray-200">
-                <div className="grid grid-cols-2 gap-3">
-                  <Link
-                    href="/login"
-                    className="flex items-center justify-center space-x-2 bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <User className="h-4 w-4" />
-                    <span>Sign In</span>
-                  </Link>
-                  <Link
-                    href="/track-order"
-                    className="flex items-center justify-center space-x-2 border-2 border-primary-800 text-primary-800 hover:bg-primary-800 hover:text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Search className="h-4 w-4" />
-                    <span>Track Order</span>
-                  </Link>
-                </div>
+                {isAuthenticated ? (
+                  <div className="space-y-3">
+                    <div className="text-center py-2">
+                      <div className="font-medium text-gray-900">{user?.first_name} {user?.last_name}</div>
+                      <div className="text-sm text-gray-500">{user?.email}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link
+                        href="/my-account"
+                        className="flex items-center justify-center space-x-2 bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Account</span>
+                      </Link>
+                      <Link
+                        href="/my-orders"
+                        className="flex items-center justify-center space-x-2 border-2 border-primary-800 text-primary-800 hover:bg-primary-800 hover:text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Search className="h-4 w-4" />
+                        <span>Orders</span>
+                      </Link>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout()
+                        setIsMenuOpen(false)
+                      }}
+                      className="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      href="/login"
+                      className="flex items-center justify-center space-x-2 bg-primary-800 hover:bg-primary-900 text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4" />
+                      <span>Sign In</span>
+                    </Link>
+                    <Link
+                      href="/track-order"
+                      className="flex items-center justify-center space-x-2 border-2 border-primary-800 text-primary-800 hover:bg-primary-800 hover:text-white py-2.5 px-4 rounded-lg font-medium transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Search className="h-4 w-4" />
+                      <span>Track Order</span>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           )}

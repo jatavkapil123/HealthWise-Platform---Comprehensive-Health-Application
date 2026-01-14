@@ -14,33 +14,37 @@ export function Hero() {
       icon: TestTube,
       title: 'Lab Tests at Home',
       description: 'Book pathology & radiology tests with home sample collection',
-      color: 'from-primary-800 to-primary-700'
+      color: 'from-primary-800 to-primary-700',
+      link: '/lab-tests'
     },
     {
       icon: Stethoscope,
       title: 'Consult Doctors Online',
       description: 'Connect with certified doctors through video consultations',
-      color: 'from-primary-700 to-primary-600'
+      color: 'from-primary-700 to-primary-600',
+      link: '/consult-doctor'
     },
     {
       icon: Heart,
-      title: 'Full Body Checkup',
-      description: 'Comprehensive health screening at affordable prices',
-      color: 'from-primary-600 to-primary-500'
+      title: 'Order Medicines',
+      description: 'Get genuine medicines delivered to your doorstep',
+      color: 'from-primary-600 to-primary-500',
+      link: '/medicines'
     },
     {
       icon: FileText,
       title: 'Digital Health Reports',
       description: 'Get detailed digital reports with health risk assessment',
-      color: 'from-primary-500 to-primary-400'
+      color: 'from-primary-500 to-primary-400',
+      link: '/health-reports'
     }
   ]
 
   const healthServices = [
-    { name: 'Full Body Checkup', price: '₹499', tests: '59 biomarkers' },
-    { name: 'Diabetes Package', price: '₹299', tests: '8 tests' },
-    { name: 'Thyroid Profile', price: '₹199', tests: '3 tests' },
-    { name: 'Lipid Profile', price: '₹149', tests: '8 tests' },
+    { name: 'Full Body Checkup', price: '₹499', tests: '59 biomarkers', link: '/lab-tests' },
+    { name: 'Doctor Consultation', price: '₹500', tests: 'Video/Audio', link: '/consult-doctor' },
+    { name: 'Medicine Delivery', price: 'Free', tests: 'Above ₹500', link: '/medicines' },
+    { name: 'Health Reports', price: 'Digital', tests: '24 hours', link: '/health-reports' },
   ]
 
   return (
@@ -120,11 +124,15 @@ export function Hero() {
           {/* Quick Actions - Bajaj Style */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16 max-w-4xl mx-auto">
             {healthServices.map((service, index) => (
-              <div key={index} className="bg-white border-2 border-gray-100 hover:border-primary-800 rounded-xl p-4 transition-all hover:shadow-lg cursor-pointer">
-                <div className="text-primary-800 font-bold text-lg">{service.price}</div>
-                <div className="font-semibold text-gray-900 mb-1">{service.name}</div>
+              <Link 
+                key={index} 
+                href={service.link}
+                className="bg-white border-2 border-gray-100 hover:border-primary-800 rounded-xl p-4 transition-all hover:shadow-lg cursor-pointer group"
+              >
+                <div className="text-primary-800 font-bold text-lg group-hover:text-primary-900">{service.price}</div>
+                <div className="font-semibold text-gray-900 mb-1 group-hover:text-primary-800">{service.name}</div>
                 <div className="text-sm text-gray-600">{service.tests}</div>
-              </div>
+              </Link>
             ))}
           </div>
 
