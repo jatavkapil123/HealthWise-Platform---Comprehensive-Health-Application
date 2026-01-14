@@ -1,3 +1,6 @@
 {
-  "/book-test/page": "app/book-test/page.js"
+  "/book-test/page": "app/book-test/page.js",
+  "/page": "app/page.js",
+  "/book-appointment/page": "app/book-appointment/page.js",
+  "/emergency/page": "app/emergency/page.js"
 }
