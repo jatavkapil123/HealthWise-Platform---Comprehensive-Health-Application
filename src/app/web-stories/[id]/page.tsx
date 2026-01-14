@@ -5,6 +5,26 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Heart, Share2, Bookmark, Play } from 'lucide-react'
 
+interface StorySlide {
+  id: number
+  title: string
+  content: string
+  image?: string
+  backgroundColor: string
+}
+
+interface Story {
+  id: number
+  title: string
+  description: string
+  category: string
+  slides: StorySlide[]
+  views: number
+  likes: number
+  videoId?: string
+  videoTitle?: string
+}
+
 export default function WebStoryDetailPage() {
   const params = useParams()
   const router = useRouter()
@@ -15,7 +35,7 @@ export default function WebStoryDetailPage() {
   const [bookmarked, setBookmarked] = useState(false)
 
   // Mock data - In production, fetch from API
-  const stories = {
+  const stories: Record<string, Story> = {
     '1': {
       id: 1,
       title: '5 Morning Habits for Better Health',

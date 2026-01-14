@@ -223,6 +223,13 @@ class ApiService {
     }
   }
 
+  logout() {
+    // Clear all auth-related storage
+    removeFromStorage(STORAGE_KEYS.AUTH_TOKEN)
+    removeFromStorage(STORAGE_KEYS.REFRESH_TOKEN)
+    removeFromStorage(STORAGE_KEYS.USER_DATA)
+  }
+
   // Health Alerts methods
   async getHealthAlerts(status?: string, alertType?: string, limit: number = 50) {
     try {
@@ -612,7 +619,7 @@ class ApiService {
   }
 
   // Emergency services
-  async getEmergencyContacts(userId: string) {
+  async getEmergencyContactsLegacy(userId: string) {
     return this.get(`${API_ENDPOINTS.EMERGENCY_CONTACTS}/${userId}`)
   }
 

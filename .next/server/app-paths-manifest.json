@@ -1,6 +1,8 @@
 {
-  "/book-test/page": "app/book-test/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
   "/book-appointment/page": "app/book-appointment/page.js",
-  "/emergency/page": "app/emergency/page.js"
+  "/consult-doctor/page": "app/consult-doctor/page.js",
+  "/health-library/page": "app/health-library/page.js",
+  "/health-tests/page": "app/health-tests/page.js"
 }

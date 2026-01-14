@@ -56,7 +56,7 @@ export default function MyAccountPage() {
         pincode: user.pincode || '',
         emergency_contact_name: user.emergency_contact_name || '',
         emergency_contact_phone: user.emergency_contact_phone || '',
-        medical_conditions: user.medical_conditions || '',
+        medical_conditions: user.chronic_conditions || '',
         allergies: user.allergies || '',
         current_medications: user.current_medications || ''
       })
@@ -92,7 +92,7 @@ export default function MyAccountPage() {
         pincode: user.pincode || '',
         emergency_contact_name: user.emergency_contact_name || '',
         emergency_contact_phone: user.emergency_contact_phone || '',
-        medical_conditions: user.medical_conditions || '',
+        medical_conditions: user.chronic_conditions || '',
         allergies: user.allergies || '',
         current_medications: user.current_medications || ''
       })
@@ -653,7 +653,7 @@ export default function MyAccountPage() {
                       />
                     ) : (
                       <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-900 min-h-[80px]">
-                        {user.medical_conditions || 'None reported'}
+                        {user.chronic_conditions || 'None reported'}
                       </div>
                     )}
                   </div>
