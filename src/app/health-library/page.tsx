@@ -27,6 +27,7 @@ export default function HealthLibraryPage() {
   const [loading, setLoading] = useState(false)
 
   const categories = [
+    { value: 'exercise_yoga', label: 'Exercise & Yoga', featured: true },
     { value: 'general_health', label: 'General Health' },
     { value: 'covid_19', label: 'COVID-19' },
     { value: 'heart_health', label: 'Heart Health' },
@@ -139,6 +140,29 @@ export default function HealthLibraryPage() {
               </button>
             </div>
           </div>
+
+          {/* Featured: Exercise & Yoga Section */}
+          <Link href="/health-library/exercise-yoga">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-xl p-8 mb-8 cursor-pointer hover:shadow-2xl transition-all transform hover:scale-[1.02]">
+              <div className="flex flex-col md:flex-row items-center justify-between text-white">
+                <div className="mb-4 md:mb-0">
+                  <h2 className="text-3xl font-bold mb-2">Exercise & Yoga</h2>
+                  <p className="text-blue-100 text-lg mb-4">
+                    Transform your health with guided exercises and yoga poses
+                  </p>
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="bg-white/20 px-3 py-1 rounded-full">12 Exercises</span>
+                    <span className="bg-white/20 px-3 py-1 rounded-full">Step-by-Step Guides</span>
+                    <span className="bg-white/20 px-3 py-1 rounded-full">All Levels</span>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 text-center">
+                  <div className="text-4xl font-bold">🧘‍♀️</div>
+                  <div className="text-sm mt-2">Start Now</div>
+                </div>
+              </div>
+            </div>
+          </Link>
 
           {/* Content Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

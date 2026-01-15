@@ -35,6 +35,7 @@ export function Header() {
       description: 'Medical information & resources',
       hasDropdown: true,
       dropdownItems: [
+        { name: 'Exercise & Yoga', href: '/health-library/exercise-yoga' },
         { name: 'General Health', href: '/health-library/general-health' },
         { name: 'Covid-19', href: '/health-library/covid-19' },
         { name: 'Aarogya Care', href: '/health-library/aarogya-care' },
@@ -44,7 +45,6 @@ export function Header() {
         { name: 'Hypertension', href: '/health-library/hypertension' },
         { name: 'Heart Health', href: '/health-library/heart-health' },
         { name: 'Diabetes', href: '/health-library/diabetes' },
-        { name: 'Yoga & Exercise', href: '/health-library/yoga-exercise' },
         { name: 'Skin & Hair', href: '/health-library/skin-hair' },
         { name: 'Women\'s Health', href: '/health-library/womens-health' },
         { name: 'Immunity', href: '/health-library/immunity' },

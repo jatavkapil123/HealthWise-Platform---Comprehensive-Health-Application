@@ -1,8 +1,13 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
-  "/book-appointment/page": "app/book-appointment/page.js",
-  "/consult-doctor/page": "app/consult-doctor/page.js",
   "/health-library/page": "app/health-library/page.js",
-  "/health-tests/page": "app/health-tests/page.js"
+  "/health-library/exercise-yoga/page": "app/health-library/exercise-yoga/page.js",
+  "/page": "app/page.js",
+  "/lab-tests/page": "app/lab-tests/page.js",
+  "/web-stories/page": "app/web-stories/page.js",
+  "/web-stories/[id]/page": "app/web-stories/[id]/page.js",
+  "/health-tests/page": "app/health-tests/page.js",
+  "/corporate-benefits/page": "app/corporate-benefits/page.js",
+  "/medicards/page": "app/medicards/page.js",
+  "/emergency/page": "app/emergency/page.js"
 }
