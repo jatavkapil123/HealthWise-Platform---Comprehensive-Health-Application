@@ -1,4 +1,4 @@
-// File: /home/kapil-jatav/Devops Project/src/app/layout.tsx
+// File: /home/kapil-jatav/Downloads/HealthWise-Platform---Comprehensive-Health-Application/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
